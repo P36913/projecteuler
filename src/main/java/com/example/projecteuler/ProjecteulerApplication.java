@@ -17,7 +17,8 @@ public class ProjecteulerApplication implements CommandLineRunner {
 
 	@Override
   	public void run(String... args) throws Exception {
-    p054.solveProblem();
+    int player1WinCount = p054.solveProblem();
+	System.out.println("Player 1 has won: " + player1WinCount + " games.");
   }
 
 }

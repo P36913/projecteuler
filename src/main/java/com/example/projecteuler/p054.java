@@ -17,17 +17,34 @@ public class p054 {
     @Value("classpath:poker.txt")
     private Resource res;
 
-    public void solveProblem() throws IOException {
+    public int solveProblem() throws IOException {
         System.out.println("Started the solution process for Problem 54.");
         List<String> lines = Files.readAllLines(Paths.get(res.getURI()), StandardCharsets.UTF_8);
+        int player1WinCount = 0;
 
         for (String line : lines) {
             String[] hands = line.split("\\s+");
-            String[] player1Hand = Arrays.copyOfRange(hands, 0, hands.length/2);
-            String[] player2Hand = Arrays.copyOfRange(hands, hands.length/2, hands.length);
+            pokerHand player1 = new pokerHand(Arrays.copyOfRange(hands, 0, hands.length / 2));
+            pokerHand player2 = new pokerHand(Arrays.copyOfRange(hands, hands.length / 2, hands.length));
 
-            //compare player1Hand with player2Hand
+            // compare player1Hand with player2Hand
+            int winningHandPlayer = compareHands(player1, player2);
+
+            if (winningHandPlayer == 1) {
+                player1WinCount++;
+            }
         }
 
+        return player1WinCount;
     }
+
+    private int compareHands(pokerHand player1, pokerHand player2) {
+        int winningPlayer = 0;
+        // if (player1.isFlush()) {
+        //     winningPlayer = 1;
+        // }
+
+        return winningPlayer;
+    }
+
 }
