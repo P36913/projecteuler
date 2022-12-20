@@ -40,9 +40,9 @@ public class p054 {
 
     private int compareHands(pokerHand player1, pokerHand player2) {
         int winningPlayer = 0;
-        // if (player1.isFlush()) {
-        //     winningPlayer = 1;
-        // }
+        if (player1.isFlush()) {
+            winningPlayer = 1;
+        }
 
         return winningPlayer;
     }
