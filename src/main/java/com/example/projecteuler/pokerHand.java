@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 public class pokerHand {
     public pokerCard[] hand = new pokerCard[5];
+    // set in countOccurences void method, to later check for pairs, etc.
+    public int firstPairValue = 0, secondPairValue = 0, threeOfAKindValue = 0, fourOfAKindValue = 0, kicker = 0;
 
     // constructor
     pokerHand(String[] hand) {
@@ -15,18 +17,38 @@ public class pokerHand {
         this.hand[4] = new pokerCard(hand[4]);
     }
 
+    public int getFirstPairValue() {
+        return firstPairValue;
+    }
+
+    public int getSecondPairValue() {
+        return secondPairValue;
+    }
+
+    public int getThreeOfAKindValue() {
+        return threeOfAKindValue;
+    }
+
+    public int getFourOfAKindValue() {
+        return fourOfAKindValue;
+    }
+
+    public int getKicker() {
+        return kicker;
+    }
+
     static private Comparator<pokerCard> ascPokerHand;
 
     static {
-        ascPokerHand = new Comparator<pokerCard>(){
+        ascPokerHand = new Comparator<pokerCard>() {
             @Override
-            public int compare(pokerCard pc1, pokerCard pc2){
+            public int compare(pokerCard pc1, pokerCard pc2) {
                 return Integer.compare(pc1.getValue(), pc2.getValue());
             }
         };
     }
 
-    public void sortAscValue(){
+    public void sortAscValue() {
         Arrays.sort(hand, ascPokerHand);
     }
 
@@ -46,11 +68,17 @@ public class pokerHand {
     }
 
     public boolean isFourOfAKind() {
-        return true;
+        if (fourOfAKindValue != 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isFullHouse() {
-        return true;
+        if (firstPairValue != 0 && secondPairValue == 0 && threeOfAKindValue != 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isFlush() {
@@ -77,18 +105,79 @@ public class pokerHand {
     }
 
     public boolean isThreeOfAKind() {
-        return true;
+        if (firstPairValue == 0 && secondPairValue == 0 && threeOfAKindValue != 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isTwoPairs() {
-        return true;
+        if (firstPairValue != 0 && secondPairValue != 0) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isOnePair() {
-        //String flushColor = hand[0].substring(1);
-        // for (pokerCard card: hand) {
-
-        // }
-        return true;
+        if (firstPairValue != 0 && secondPairValue == 0 && threeOfAKindValue == 0) {
+            return true;
+        }
+        return false;
     }
+
+    public void countOccurrences() {
+        sortAscValue();
+        int previousCard = 0;
+        int counter = 0; // counts frequency of current card
+        int pairCount = 0; //, threeOfAKindCount = 0, fourOfAKindCount = 0;
+        int previousKicker = 0;
+
+        for (pokerCard card : hand) {
+            int current = card.getValue();
+
+            if (previousCard == current) {
+                counter++;
+            } else {
+                counter = 1;
+            }
+
+            if (counter == 2) {
+                kicker = previousKicker;
+
+                pairCount++;
+                if (pairCount == 1) {
+                    firstPairValue = current;
+                } else { // possible only 2
+                    secondPairValue = current;
+                }
+            } else if (counter == 3) {
+                pairCount--;
+                //threeOfAKindCount++;
+                if (pairCount == 0) {
+                    firstPairValue = 0;
+                } else { // possible only 1
+                    secondPairValue = 0;
+                }
+
+                threeOfAKindValue = current;
+
+            } else if (counter == 4) {
+                // threeOfAKindCount--;
+                // fourOfAKindCount++;
+                threeOfAKindValue = 0;
+                fourOfAKindValue = current;
+            } else {
+                if (kicker < current) {
+                    previousKicker = kicker;
+                    kicker = current;
+                }
+            }
+
+            previousCard = current;
+        }
+        System.out.println(
+                "firstPairValue: " + firstPairValue + " secondPairValue: " + secondPairValue + " threeOfAKindValue: "
+                        + threeOfAKindValue + " fourOfAKindValue: " + fourOfAKindValue + " kicker: " + kicker);
+    }
+
 }
