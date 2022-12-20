@@ -12,5 +12,17 @@ public class pokerCard {
         this.value = valueByCode.get(card.substring(0, 1));
         this.suit = card.substring(1);
     }
+
+    public int getValue() {
+        return value;
+    }
+
+    public String getSuit() {
+        return suit;
+    }
+
+    public String toString(){
+        return value + suit + " ";
+    }
     
 }

@@ -1,7 +1,10 @@
 package com.example.projecteuler;
 
+import java.util.Comparator;
+import java.util.Arrays;
+
 public class pokerHand {
-    public pokerCard[] hand;
+    public pokerCard[] hand = new pokerCard[5];
 
     // constructor
     pokerHand(String[] hand) {
@@ -12,15 +15,34 @@ public class pokerHand {
         this.hand[4] = new pokerCard(hand[4]);
     }
 
+    static private Comparator<pokerCard> ascPokerHand;
+
+    static {
+        ascPokerHand = new Comparator<pokerCard>(){
+            @Override
+            public int compare(pokerCard pc1, pokerCard pc2){
+                return Integer.compare(pc1.getValue(), pc2.getValue());
+            }
+        };
+    }
+
+    public void sortAscValue(){
+        Arrays.sort(hand, ascPokerHand);
+    }
+
     public boolean isRoyalFlush() {
-        if (isFlush() && isStraight() && 14 == getHighCard() && 10 == getLowCard()) {
+        sortAscValue(); // to get highest and lowest cards in the ends of the array
+        if (isFlush() && isStraight() && 14 == hand[4].value && 10 == hand[0].value) {
             return true;
         }
         return false;
     }
 
     public boolean isStraightFlush() {
-        return true;
+        if (isFlush() && isStraight()) {
+            return true;
+        }
+        return false;
     }
 
     public boolean isFourOfAKind() {
@@ -33,7 +55,6 @@ public class pokerHand {
 
     public boolean isFlush() {
         String flushSuit = hand[0].suit;
-        System.out.println(flushSuit);
         for (pokerCard card : hand) {
             if (!card.suit.equals(flushSuit)) {
                 return false;
@@ -43,6 +64,15 @@ public class pokerHand {
     }
 
     public boolean isStraight() {
+        sortAscValue();
+        int lowestCardValue = hand[0].value;
+        int diff = 0; // difference between lowest card and current card in a loop
+        for (pokerCard card : hand) {
+            if (card.value - lowestCardValue != diff) {
+                return false;
+            }
+            diff++;
+        }
         return true;
     }
 
@@ -56,31 +86,9 @@ public class pokerHand {
 
     public boolean isOnePair() {
         //String flushColor = hand[0].substring(1);
-        for (pokerCard card: hand) {
+        // for (pokerCard card: hand) {
 
-        }
+        // }
         return true;
-    }
-
-    public int getHighCard() {
-        // Jack = 11, Queen = 12, King = 13, Ace = 14
-        var highCard = 2;
-        for (int i = 0; i < 5; i++) {
-            if (hand[i].value > highCard) {
-                highCard = hand[i].value;
-            }
-        }
-        return highCard;
-    }
-
-    public int getLowCard() {
-        // Jack = 11, Queen = 12, King = 13
-        var lowCard = 14;
-        for (int i = 0; i < 5; i++) {
-            if (hand[i].value < lowCard) {
-                lowCard = hand[i].value;
-            }
-        }
-        return lowCard;
     }
 }
