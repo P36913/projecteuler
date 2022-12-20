@@ -175,9 +175,42 @@ public class pokerHand {
 
             previousCard = current;
         }
-        System.out.println(
-                "firstPairValue: " + firstPairValue + " secondPairValue: " + secondPairValue + " threeOfAKindValue: "
-                        + threeOfAKindValue + " fourOfAKindValue: " + fourOfAKindValue + " kicker: " + kicker);
+    }
+
+    public int evaluateHand() {
+        // High card = 1
+        // One Pair = 2
+        // Two Pairs = 3
+        // Three of a Kind = 4
+        // Straight = 5
+        // Flush = 6
+        // Full House = 7
+        // Four of a Kind = 8
+        // Straight Flush = 9
+        // Royal Flush = 10
+        countOccurrences();
+        if (isOnePair()) {
+            return 2;
+        } else if (isTwoPairs()) {
+            return 3;
+        } else if (isThreeOfAKind()) {
+            return 4;
+        } else if (isStraight()) {
+            return 5;
+        } else if (isFlush()) {
+            return 6;
+        } else if (isFullHouse()) {
+            return 7;
+        } else if (isFourOfAKind()) {
+            return 8;
+        } else if (isStraightFlush()) {
+            return 9;
+        } else if (isRoyalFlush()) {
+            return 10;
+        }
+
+        // High card
+        return 1;
     }
 
 }

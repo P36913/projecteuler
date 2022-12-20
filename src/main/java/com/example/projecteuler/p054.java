@@ -42,8 +42,70 @@ public class p054 {
 
     private int compareHands(pokerHand player1, pokerHand player2) {
         int winningPlayer = 0;
-        if (player1.isStraight()) {
+        int player1Evaluation = player1.evaluateHand();
+        int player2Evaluation = player2.evaluateHand();
+        // Every time only one player has a better hand !!!
+        if (player1Evaluation > player2Evaluation) {
             winningPlayer = 1;
+        } else if (player1Evaluation == player2Evaluation) {
+            if (player1Evaluation == 2) { // One Pair
+                if (player1.getFirstPairValue() > player2.getFirstPairValue()) {
+                    winningPlayer = 1;
+                } else if (player1.getFirstPairValue() == player2.getFirstPairValue()) {
+                    winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+                } else {
+                    winningPlayer = 2;
+                }
+            } else if (player1Evaluation == 3) { // Two Pairs
+                // second pair because in pokerHand hand is sorted in ascending order
+                if (player1.getSecondPairValue() > player2.getSecondPairValue()) {
+                    winningPlayer = 1;
+                } else if (player1.getSecondPairValue() == player2.getSecondPairValue()) {
+                    winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+                } else {
+                    winningPlayer = 2;
+                }
+            } else if (player1Evaluation == 4) { // Three of a Kind
+                if (player1.getThreeOfAKindValue() > player2.getThreeOfAKindValue()) {
+                    winningPlayer = 1;
+                } else if (player1.getThreeOfAKindValue() == player2.getThreeOfAKindValue()) {
+                    winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+                } else {
+                    winningPlayer = 2;
+                }
+            } else if (player1Evaluation == 7) { // Full House
+                if (player1.getThreeOfAKindValue() > player2.getThreeOfAKindValue()) {
+                    winningPlayer = 1;
+                } else if (player1.getThreeOfAKindValue() == player2.getThreeOfAKindValue()) {
+                    winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+                } else {
+                    winningPlayer = 2;
+                }
+            }  else if (player1Evaluation == 8) { // Four of a Kind
+                if (player1.getFourOfAKindValue() > player2.getFourOfAKindValue()) {
+                    winningPlayer = 1;
+                } else if (player1.getFourOfAKindValue() == player2.getFourOfAKindValue()) {
+                    winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+                } else {
+                    winningPlayer = 2;
+                }
+            }  else { // High Card, Straight, Flush, Straight Flush
+                winningPlayer = compareKickers(player1.getKicker(), player2.getKicker());
+            }
+        } else {
+            winningPlayer = 2;
+        }
+        
+        return winningPlayer;
+    }
+
+    private int compareKickers(int player1Kicker, int player2Kicker) {
+        int winningPlayer = 0;
+
+        if (player1Kicker > player2Kicker) {
+            winningPlayer = 1;
+        } else {
+            winningPlayer = 2;
         }
 
         return winningPlayer;
