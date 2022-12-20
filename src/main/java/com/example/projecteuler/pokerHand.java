@@ -129,7 +129,7 @@ public class pokerHand {
         sortAscValue();
         int previousCard = 0;
         int counter = 0; // counts frequency of current card
-        int pairCount = 0; //, threeOfAKindCount = 0, fourOfAKindCount = 0;
+        int pairCount = 0;
         int previousKicker = 0;
 
         for (pokerCard card : hand) {
@@ -152,7 +152,6 @@ public class pokerHand {
                 }
             } else if (counter == 3) {
                 pairCount--;
-                //threeOfAKindCount++;
                 if (pairCount == 0) {
                     firstPairValue = 0;
                 } else { // possible only 1
@@ -162,8 +161,6 @@ public class pokerHand {
                 threeOfAKindValue = current;
 
             } else if (counter == 4) {
-                // threeOfAKindCount--;
-                // fourOfAKindCount++;
                 threeOfAKindValue = 0;
                 fourOfAKindValue = current;
             } else {

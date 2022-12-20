@@ -26,8 +26,6 @@ public class p054 {
             String[] hands = line.split("\\s+");
             pokerHand player1 = new pokerHand(Arrays.copyOfRange(hands, 0, hands.length / 2));
             pokerHand player2 = new pokerHand(Arrays.copyOfRange(hands, hands.length / 2, hands.length));
-            // player1.sortAscValue();
-            // System.out.println(Arrays.toString(player1.hand));
 
             // compare player1Hand with player2Hand
             int winningHandPlayer = compareHands(player1, player2);
@@ -95,7 +93,7 @@ public class p054 {
         } else {
             winningPlayer = 2;
         }
-        
+
         return winningPlayer;
     }
 
